@@ -431,7 +431,8 @@ DfpnSolver::DfpnSolver()
       m_timelimit(0.0),
       m_wideningBase(1),
       m_wideningFactor(0.25f),
-      m_epsilon(0.0f),
+      m_wideningMax(0),
+      m_epsilon(0.25f),
       m_threads(1),
       m_threadWork(50),
       m_dnSumAll(true),
@@ -1060,8 +1061,10 @@ size_t DfpnSolver::ComputeMaxChildIndex(const std::vector<T>&
     if (numNonLosingChildren < 2)
         return childrenBounds.size();
 
-    int childrenToLookAt = WideningBase() 
-        + int(ceil(float(numNonLosingChildren) * WideningFactor()));
+    int childrenToLookAt = m_wideningBase
+        + int(ceil(float(numNonLosingChildren) * m_wideningFactor));
+    if (m_wideningMax > 0)
+        childrenToLookAt = std::min(childrenToLookAt, m_wideningMax);
 
     BenzeneAssert(childrenToLookAt >= 1);
 

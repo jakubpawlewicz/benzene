@@ -517,8 +517,7 @@ public:
     /** Widening base affects what number of the moves to consider
         are always looked at by the dfpn search (omitting losing moves),
         regardless of branching factor. This amount is added to the
-        proportion computed by the WideningFactor (see below).
-        The base must be set to at least 1. */
+        proportion computed by the WideningFactor (see below). */
     int WideningBase() const;
 
     /** See WideningBase() */
@@ -531,6 +530,12 @@ public:
 
     /** See WideningFactor() */
     void SetWideningFactor(float wideningFactor);
+
+    /** Sets the maximum of moves to consider. */
+    int WideningMax() const;
+
+    /** See WideningMax() */
+    void SetWideningMax(int wideningMax);
 
     /** Epsilon is the epsilon used in 1+epsilon trick,
      *  i.e. when setting bounds for a child MID call
@@ -688,6 +693,9 @@ private:
 
     /** See WideningFactor() */
     float m_wideningFactor;
+
+    /** See WideningMax() */
+    int m_wideningMax;
 
     /** See Epsilon() */
     float m_epsilon;
@@ -905,6 +913,16 @@ inline float DfpnSolver::WideningFactor() const
 inline void DfpnSolver::SetWideningFactor(float wideningFactor)
 {
     m_wideningFactor = wideningFactor;
+}
+
+inline int DfpnSolver::WideningMax() const
+{
+    return m_wideningMax;
+}
+
+inline void DfpnSolver::SetWideningMax(int wideningMax)
+{
+    m_wideningMax = wideningMax;
 }
 
 inline float DfpnSolver::Epsilon() const

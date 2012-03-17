@@ -125,6 +125,8 @@ void DfpnCommands::CmdParam(HtpCommand& cmd)
             << m_solver.WideningBase() << '\n'
             << "[string] widening_factor "
             << m_solver.WideningFactor() << '\n'
+            << "[string] widening_max "
+            << m_solver.WideningMax() << '\n'
             << "[string] epsilon "
             << m_solver.Epsilon() << '\n'
             << "[string] threads "
@@ -173,6 +175,8 @@ void DfpnCommands::CmdParam(HtpCommand& cmd)
             else
                 throw GtpFailure() << "widening_factor must be in (0, 1]";
         }
+        else if (name == "widening_max")
+            m_solver.SetWideningMax(cmd.ArgMin<int>(1, 0));
         else if (name == "epsilon")
         {
             float value = cmd.Arg<float>(1);
