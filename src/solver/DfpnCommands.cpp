@@ -131,6 +131,8 @@ void DfpnCommands::CmdParam(HtpCommand& cmd)
             << m_solver.Threads() << '\n'
             << "[string] thread_work "
             << m_solver.ThreadWork() << '\n'
+            << "[bool] dn_sum_all "
+            << m_solver.DnSumAll() << '\n'
             << "[string] db_bak_filename "
             << m_solver.DbBakFilename() << '\n'
             << "[string] db_bak_start "
@@ -183,6 +185,8 @@ void DfpnCommands::CmdParam(HtpCommand& cmd)
             m_solver.SetThreads(cmd.ArgMinMax<int>(1, 1, DFPN_MAX_THREADS));
         else if (name == "thread_work")
             m_solver.SetThreadWork(cmd.ArgMin<size_t>(1, 1));
+        else if (name == "dn_sum_all")
+            m_solver.SetDnSumAll(cmd.Arg<bool>(1));
         else if (name == "db_bak_filename")
             m_solver.SetDbBakFilename(cmd.Arg(1));
         else if (name == "db_bak_start")

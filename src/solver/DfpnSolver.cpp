@@ -433,7 +433,8 @@ DfpnSolver::DfpnSolver()
       m_wideningFactor(0.25f),
       m_epsilon(0.0f),
       m_threads(1),
-      m_threadWork(1000),
+      m_threadWork(50),
+      m_dnSumAll(true),
       m_db_bak_filename("db.dump"),
       m_db_bak_start(date(2012,2,11),hours(3)),
       m_db_bak_period(hours(-48)),
@@ -1059,11 +1060,9 @@ size_t DfpnSolver::ComputeMaxChildIndex(const std::vector<T>&
     if (numNonLosingChildren < 2)
         return childrenBounds.size();
 
-    // this needs experimenting!
     int childrenToLookAt = WideningBase() 
         + int(ceil(float(numNonLosingChildren) * WideningFactor()));
-    // Must examine at least two children when have two or more live,
-    // since otherwise delta2 will be set to infinity in SelectChild.
+
     BenzeneAssert(childrenToLookAt >= 1);
 
     int numNonLosingSeen = 0;
@@ -1166,7 +1165,8 @@ void DfpnSolver::UpdateBounds(DfpnBounds& bounds,
         if (i < maxChildIndex)
             boundsAll.phi = std::min(boundsAll.phi, childBounds.delta);
         BenzeneAssert(childBounds.phi != DfpnBounds::INFTY);
-        boundsAll.delta += childBounds.phi;
+        if (i < maxChildIndex || m_dnSumAll)
+            boundsAll.delta += childBounds.phi;
     }
     if (boundsAll.phi == DfpnBounds::INFTY)
         boundsAll.delta = 0;

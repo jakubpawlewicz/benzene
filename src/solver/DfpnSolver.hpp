@@ -552,6 +552,13 @@ public:
     /** See ThreadWork() */
     void SetThreadWork(size_t threadWork);
 
+    /** Computue disproof number by suming all childrend dns
+        not only inside focused region. */
+    bool DnSumAll() const;
+
+    /** See DnSumAll() */
+    void SetDnSumAll(bool enable);
+
     /** Name of backup file for db. */
     std::string DbBakFilename() const;
 
@@ -690,6 +697,9 @@ private:
 
     /** See ThreadWork() */
     size_t m_threadWork;
+
+    /** See DnSumAll() */
+    bool m_dnSumAll;
 
     /** See DbBakFilename() */
     std::string m_db_bak_filename;
@@ -925,6 +935,16 @@ inline size_t DfpnSolver::ThreadWork() const
 inline void DfpnSolver::SetThreadWork(size_t threadWork)
 {
     m_threadWork = threadWork;
+}
+
+inline bool DfpnSolver::DnSumAll() const
+{
+    return m_dnSumAll;
+}
+
+inline void DfpnSolver::SetDnSumAll(bool enable)
+{
+    m_dnSumAll = enable;
 }
 
 inline std::string DfpnSolver::DbBakFilename() const
