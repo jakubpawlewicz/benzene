@@ -223,6 +223,10 @@ public:
         Returns false if there is none. */
     bool SmallestSemiCarrier(bitset_t& carrier) const;
 
+    /** Tries to get a key of carrier of semi VC connecting x and y.
+        Returns INVALID_POINT if there is none. */
+    HexPoint GetKey(HexPoint x, HexPoint y, bitset_t carrier) const;
+
     /** Tries to get a key of the smallest carrier of semi VC
         connecting edges. Returns INVALID_POINT if there is none. */
     HexPoint SmallestSemiKey() const;
@@ -238,6 +242,8 @@ public:
     const CarrierList& GetSemiCarriers() const;
 
     bitset_t SemiIntersection() const;
+
+    const CarrierList& GetSemiCarriers(HexPoint x, HexPoint y) const;
 
     /** Needed for decomosition. */
     const CarrierList& GetFullCarriers(HexPoint x, HexPoint y) const;
@@ -550,18 +556,39 @@ private:
 
     std::vector<Backup> backups;
     // @}
+
+    template <bool semi, class Stream>
+    void DumpCarrierList(Stream& os, HexPoint x, HexPoint y,
+                         const CarrierList& list) const;
 };
+
+template <bool semi, class Stream>
+void VCS::DumpCarrierList(Stream& os, HexPoint x, HexPoint y,
+                          const CarrierList& list) const
+{
+    for (CarrierList::Iterator i(list); i; ++i)
+    {
+        os << m_color << ' ' << x << ' ' << y << ' '
+           << (semi ? "semi" : "full")
+           << " unknown ["
+           << HexPointUtil::ToString(i.Carrier())
+           << " ] [ ]";
+        if (semi)
+            os << ' ' << GetKey(x, y, i.Carrier());
+        os << '\n';
+    }
+}
 
 template <class Stream>
 void VCS::DumpFulls(Stream& os, HexPoint x, HexPoint y) const
 {
-    BenzeneAssert(false /* stub */);
+    DumpCarrierList<false>(os, x, y, GetFullCarriers(x, y));
 }
 
 template <class Stream>
 void VCS::DumpSemis(Stream& os, HexPoint x, HexPoint y) const
 {
-    BenzeneAssert(false /* stub */);
+    DumpCarrierList<true>(os, x, y, GetSemiCarriers(x, y));
 }
 
 template <class Stream>

@@ -1305,21 +1305,18 @@ bool VCS::SmallestSemiCarrier(bitset_t& carrier) const
     return true;
 }
 
-HexPoint VCS::SmallestSemiKey() const
+HexPoint VCS::GetKey(HexPoint x, HexPoint y, bitset_t carrier) const
 {
-    bitset_t carrier;
-    if (!SmallestSemiCarrier(carrier))
-        return INVALID_POINT;
-    bitset_t edgesCapturedSet = m_capturedSet[m_edge1] | m_capturedSet[m_edge2];
+    bitset_t edgesCapturedSet = m_capturedSet[x] | m_capturedSet[y];
     for (BitsetIterator k(carrier); k; ++k)
     {
         bitset_t capturedSet = edgesCapturedSet | m_capturedSet[*k];
         if (!BitsetUtil::IsSubsetOf(capturedSet, carrier))
             capturedSet.reset();
-        AndList* fulls1 = m_fulls[m_edge1][*k];
+        AndList* fulls1 = m_fulls[x][*k];
         if (!fulls1)
             continue;
-        AndList* fulls2 = m_fulls[m_edge2][*k];
+        AndList* fulls2 = m_fulls[y][*k];
         if (!fulls2)
             continue;
         for (CarrierList::Iterator i(*fulls1); i; ++i)
@@ -1331,13 +1328,21 @@ HexPoint VCS::SmallestSemiKey() const
                 if (!BitsetUtil::IsSubsetOf(j.Carrier(), carrier))
                     continue;
                 if (BitsetUtil::IsSubsetOf(i.Carrier() & j.Carrier(),
-                                           capturedSet))
+                    capturedSet))
                     return *k;
             }
         }
     }
     BenzeneAssert(false /* always should find a key */);
     return INVALID_POINT;
+}
+
+HexPoint VCS::SmallestSemiKey() const
+{
+    bitset_t carrier;
+    if (!SmallestSemiCarrier(carrier))
+        return INVALID_POINT;
+    return GetKey(m_edge1, m_edge2, carrier);
 }
 
 bool VCS::FullExists(HexPoint x, HexPoint y) const
@@ -1371,6 +1376,14 @@ const CarrierList& VCS::GetFullCarriers(HexPoint x, HexPoint y) const
     return *fulls;
 }
 
+const CarrierList& VCS::GetSemiCarriers(HexPoint x, HexPoint y) const
+{
+    OrList* semis = m_semis[x][y];
+    if (!semis)
+        return empty_carrier_list;
+    return *semis;
+}
+
 const CarrierList& VCS::GetFullCarriers() const
 {
     return GetFullCarriers(m_edge1, m_edge2);
@@ -1378,10 +1391,7 @@ const CarrierList& VCS::GetFullCarriers() const
 
 const CarrierList& VCS::GetSemiCarriers() const
 {
-    OrList* semis = m_semis[m_edge1][m_edge2];
-    if (!semis)
-        return empty_carrier_list;
-    return *semis;
+    return GetSemiCarriers(m_edge1, m_edge2);
 }
 
 bitset_t VCS::GetFullNbs(HexPoint x) const
