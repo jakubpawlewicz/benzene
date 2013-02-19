@@ -22,6 +22,7 @@ HexSgUtil.cpp \
 ICEngine.cpp \
 IcePatternSet.cpp \
 InferiorCells.cpp \
+NeighborTracker.cpp \
 Pattern.cpp\
 PatternState.cpp\
 Resistance.cpp \
@@ -71,6 +72,7 @@ HexStateAssertRestored.hpp \
 ICEngine.hpp \
 IcePatternSet.hpp \
 InferiorCells.hpp \
+NeighborTracker.hpp \
 Move.hpp \
 PatternState.hpp \
 Pattern.hpp \

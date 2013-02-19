@@ -24,11 +24,11 @@ wolve_LDADD = \
 $(FUEGO_BUILD)/smartgame/libfuego_smartgame.a \
 $(FUEGO_BUILD)/gtpengine/libfuego_gtpengine.a \
 $(DB_LIBS) \
-$(BOOST_DATE_TIME_LIB) \
-$(BOOST_FILESYSTEM_LIB) \
-$(BOOST_PROGRAM_OPTIONS_LIB) \
-$(BOOST_SYSTEM_LIB) \
-$(BOOST_THREAD_LIB)
+$(BOOST_DATE_TIME_LIBS) \
+$(BOOST_FILESYSTEM_LIBS) \
+$(BOOST_PROGRAM_OPTIONS_LIBS) \
+$(BOOST_SYSTEM_LIBS) \
+$(BOOST_THREAD_LIBS)
 
 wolve_DEPENDENCIES = \
 ../util/libutil.a \
@@ -39,7 +39,12 @@ wolve_DEPENDENCIES = \
 $(FUEGO_BUILD)/smartgame/libfuego_smartgame.a \
 $(FUEGO_BUILD)/gtpengine/libfuego_gtpengine.a
 
-wolve_LDFLAGS = $(BOOST_LDFLAGS)
+wolve_LDFLAGS = \
+$(BOOST_DATE_TIME_LDFLAGS) \
+$(BOOST_FILESYSTEM_LDFLAGS) \
+$(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
+$(BOOST_SYSTEM_LDFLAGS) \
+$(BOOST_THREAD_LDFLAGS)
 
 wolve_CPPFLAGS = \
 $(BOOST_CPPFLAGS) \
