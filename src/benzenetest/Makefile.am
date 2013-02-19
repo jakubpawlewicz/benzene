@@ -19,10 +19,10 @@ benzenetest_LDADD = \
 $(FUEGO_BUILD)/smartgame/libfuego_smartgame.a \
 $(FUEGO_BUILD)/gtpengine/libfuego_gtpengine.a \
 $(DB_LIBS) \
-$(BOOST_FILESYSTEM_LIB) \
-$(BOOST_PROGRAM_OPTIONS_LIB) \
-$(BOOST_SYSTEM_LIB) \
-$(BOOST_THREAD_LIB)
+$(BOOST_FILESYSTEM_LIBS) \
+$(BOOST_PROGRAM_OPTIONS_LIBS) \
+$(BOOST_SYSTEM_LIBS) \
+$(BOOST_THREAD_LIBS)
 
 benzenetest_DEPENDENCIES = \
 ../util/libutil.a \
@@ -34,7 +34,11 @@ benzenetest_DEPENDENCIES = \
 $(FUEGO_BUILD)/smartgame/libfuego_smartgame.a \
 $(FUEGO_BUILD)/gtpengine/libfuego_gtpengine.a
 
-benzenetest_LDFLAGS = $(BOOST_LDFLAGS)
+benzenetest_LDFLAGS = \
+$(BOOST_FILESYSTEM_LDFLAGS) \
+$(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
+$(BOOST_SYSTEM_LDFLAGS) \
+$(BOOST_THREAD_LDFLAGS)
 
 benzenetest_CPPFLAGS = \
 $(BOOST_CPPFLAGS) \
